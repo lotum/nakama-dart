@@ -107,7 +107,8 @@ class RealtimeStreamData with _$RealtimeStreamData {
     required bool reliable,
   }) = _RealtimeStreamData;
 
-  factory RealtimeStreamData.fromDto(rtapi.StreamData dto) => RealtimeStreamData(
+  factory RealtimeStreamData.fromDto(rtapi.StreamData dto) =>
+      RealtimeStreamData(
         stream: RealtimeStream.fromDto(dto.stream),
         sender: UserPresence.fromDto(dto.sender),
         data: dto.data,
