@@ -1,19 +1,22 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:nakama/nakama.dart';
-import 'package:nakama/src/models/account.dart' as model;
-import 'package:nakama/src/models/channel_message.dart' as model;
-import 'package:nakama/src/models/friends.dart' as model;
-import 'package:nakama/src/models/group.dart' as model;
-import 'package:nakama/src/models/leaderboard.dart' as model;
-import 'package:nakama/src/models/match.dart' as model;
-import 'package:nakama/src/models/notification.dart' as model;
-import 'package:nakama/src/models/response_error.dart';
-import 'package:nakama/src/models/session.dart' as model;
-import 'package:nakama/src/models/storage.dart' as model;
-import 'package:nakama/src/models/tournament.dart' as model;
-import 'package:nakama/src/rest/api_client.gen.dart';
+
+import '../enum/friendship_state.dart' as model;
+import '../enum/group_membership_states.dart' as model;
+import '../models/account.dart' as model;
+import '../models/channel_message.dart' as model;
+import '../models/friends.dart' as model;
+import '../models/group.dart' as model;
+import '../models/leaderboard.dart' as model;
+import '../models/match.dart' as model;
+import '../models/notification.dart' as model;
+import '../models/response_error.dart';
+import '../models/session.dart' as model;
+import '../models/storage.dart' as model;
+import '../models/tournament.dart' as model;
+import '../rest/api_client.gen.dart';
+import 'nakama_client.dart';
 
 const _kDefaultAppKey = 'default';
 
@@ -1001,7 +1004,7 @@ class NakamaRestApiClient extends NakamaBaseClient {
     required int score,
     int? subscore,
     String? metadata,
-    LeaderboardOperator? operator,
+    model.LeaderboardOperator? operator,
   }) async {
     _session = session;
 
@@ -1053,7 +1056,7 @@ class NakamaRestApiClient extends NakamaBaseClient {
   @override
   Future<model.FriendsList> listFriends({
     required model.Session session,
-    FriendshipState? friendshipState,
+    model.FriendshipState? friendshipState,
     int limit = defaultLimit,
     String? cursor,
   }) async {
@@ -1229,7 +1232,7 @@ class NakamaRestApiClient extends NakamaBaseClient {
     required model.Session session,
     String? cursor,
     int limit = defaultLimit,
-    GroupMembershipState? state,
+    model.GroupMembershipState? state,
     String? userId,
   }) async {
     _session = session;
@@ -1254,7 +1257,7 @@ class NakamaRestApiClient extends NakamaBaseClient {
     required String groupId,
     String? cursor,
     int limit = defaultLimit,
-    GroupMembershipState? state,
+    model.GroupMembershipState? state,
   }) async {
     _session = session;
 
@@ -1542,7 +1545,7 @@ class NakamaRestApiClient extends NakamaBaseClient {
     required model.Session session,
     required String tournamentId,
     String? metadata,
-    LeaderboardOperator? operator,
+    model.LeaderboardOperator? operator,
     int? score,
     int? subscore,
   }) async {

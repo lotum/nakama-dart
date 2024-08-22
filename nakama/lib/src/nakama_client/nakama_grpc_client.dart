@@ -1,22 +1,26 @@
 import 'dart:convert';
 
+import 'package:fixnum/fixnum.dart';
 import 'package:grpc/grpc.dart';
 import 'package:grpc/grpc_connection_interface.dart';
 import 'package:logging/logging.dart';
-import 'package:nakama/nakama.dart';
-import 'package:nakama/src/api/api.dart' as api;
-import 'package:nakama/src/api/proto/api/api.pb.dart';
-import 'package:nakama/src/api/proto/apigrpc/apigrpc.pbgrpc.dart';
-import 'package:nakama/src/models/account.dart' as model;
-import 'package:nakama/src/models/channel_message.dart' as model;
-import 'package:nakama/src/models/friends.dart' as model;
-import 'package:nakama/src/models/group.dart' as model;
-import 'package:nakama/src/models/leaderboard.dart' as model;
-import 'package:nakama/src/models/match.dart' as model;
-import 'package:nakama/src/models/notification.dart' as model;
-import 'package:nakama/src/models/session.dart' as model;
-import 'package:nakama/src/models/storage.dart' as model;
-import 'package:nakama/src/models/tournament.dart' as model;
+
+import '../api/api.dart' as api;
+import '../api/proto/api/api.pb.dart';
+import '../api/proto/apigrpc/apigrpc.pbgrpc.dart';
+import '../enum/friendship_state.dart' as model;
+import '../enum/group_membership_states.dart' as model;
+import '../models/account.dart' as model;
+import '../models/channel_message.dart' as model;
+import '../models/friends.dart' as model;
+import '../models/group.dart' as model;
+import '../models/leaderboard.dart' as model;
+import '../models/match.dart' as model;
+import '../models/notification.dart' as model;
+import '../models/session.dart' as model;
+import '../models/storage.dart' as model;
+import '../models/tournament.dart' as model;
+import 'nakama_client.dart';
 
 const _kDefaultAppKey = 'default';
 
@@ -827,7 +831,7 @@ class NakamaGrpcClient extends NakamaBaseClient {
     required int score,
     int? subscore,
     String? metadata,
-    LeaderboardOperator? operator,
+    model.LeaderboardOperator? operator,
   }) async {
     final res = await _client.writeLeaderboardRecord(
       api.WriteLeaderboardRecordRequest(
@@ -876,7 +880,7 @@ class NakamaGrpcClient extends NakamaBaseClient {
   @override
   Future<model.FriendsList> listFriends({
     required model.Session session,
-    FriendshipState? friendshipState,
+    model.FriendshipState? friendshipState,
     int limit = defaultLimit,
     String? cursor,
   }) async {
@@ -1023,7 +1027,7 @@ class NakamaGrpcClient extends NakamaBaseClient {
     required model.Session session,
     String? cursor,
     int limit = defaultLimit,
-    GroupMembershipState? state,
+    model.GroupMembershipState? state,
     String? userId,
   }) async {
     final res = await _client.listUserGroups(
@@ -1045,7 +1049,7 @@ class NakamaGrpcClient extends NakamaBaseClient {
     required String groupId,
     String? cursor,
     int limit = defaultLimit,
-    GroupMembershipState? state,
+    model.GroupMembershipState? state,
   }) async {
     final res = await _client.listGroupUsers(
       api.ListGroupUsersRequest(
@@ -1298,7 +1302,7 @@ class NakamaGrpcClient extends NakamaBaseClient {
     required model.Session session,
     required String tournamentId,
     String? metadata,
-    LeaderboardOperator? operator,
+    model.LeaderboardOperator? operator,
     int? score,
     int? subscore,
   }) async {
@@ -1338,7 +1342,7 @@ class NakamaGrpcClient extends NakamaBaseClient {
   @override
   Future<void> deleteStorageObjects({
     required model.Session session,
-    required Iterable<StorageObjectId> objectIds,
+    required Iterable<model.StorageObjectId> objectIds,
   }) async {
     await _client.deleteStorageObjects(
       api.DeleteStorageObjectsRequest(
@@ -1357,7 +1361,7 @@ class NakamaGrpcClient extends NakamaBaseClient {
   @override
   Future<List<model.StorageObject>> readStorageObjects({
     required model.Session session,
-    required Iterable<StorageObjectId> objectIds,
+    required Iterable<model.StorageObjectId> objectIds,
   }) async {
     final res = await _client.readStorageObjects(
       api.ReadStorageObjectsRequest(
@@ -1380,7 +1384,7 @@ class NakamaGrpcClient extends NakamaBaseClient {
   @override
   Future<void> writeStorageObjects({
     required model.Session session,
-    required Iterable<StorageObjectWrite> objects,
+    required Iterable<model.StorageObjectWrite> objects,
   }) async {
     await _client.writeStorageObjects(
       api.WriteStorageObjectsRequest(

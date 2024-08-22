@@ -1,14 +1,15 @@
-import 'package:nakama/nakama.dart';
-import 'package:nakama/src/models/account.dart' as model;
-import 'package:nakama/src/models/channel_message.dart' as model;
-import 'package:nakama/src/models/friends.dart' as model;
-import 'package:nakama/src/models/group.dart' as model;
-import 'package:nakama/src/models/leaderboard.dart' as model;
-import 'package:nakama/src/models/match.dart' as model;
-import 'package:nakama/src/models/notification.dart' as model;
-import 'package:nakama/src/models/session.dart' as model;
-import 'package:nakama/src/models/storage.dart' as model;
-import 'package:nakama/src/models/tournament.dart' as model;
+import '../enum/friendship_state.dart' as model;
+import '../enum/group_membership_states.dart' as model;
+import '../models/account.dart' as model;
+import '../models/channel_message.dart' as model;
+import '../models/friends.dart' as model;
+import '../models/group.dart' as model;
+import '../models/leaderboard.dart' as model;
+import '../models/match.dart' as model;
+import '../models/notification.dart' as model;
+import '../models/session.dart' as model;
+import '../models/storage.dart' as model;
+import '../models/tournament.dart' as model;
 
 const _kDefaultAppKey = 'default';
 const defaultLimit = 20;
@@ -548,7 +549,7 @@ abstract class NakamaBaseClient {
     required int score,
     int? subscore,
     String? metadata,
-    LeaderboardOperator? operator,
+    model.LeaderboardOperator? operator,
   });
 
   /// Remove an owner's record from a leaderboard, if one exists.
@@ -578,7 +579,7 @@ abstract class NakamaBaseClient {
   /// - [cursor] A cursor for the current position in the friends list.
   Future<model.FriendsList> listFriends({
     required model.Session session,
-    FriendshipState? friendshipState,
+    model.FriendshipState? friendshipState,
     int limit = defaultLimit,
     String? cursor,
   });
@@ -692,7 +693,7 @@ abstract class NakamaBaseClient {
   Future<model.UserGroupList> listUserGroups({
     required model.Session session,
     String? userId,
-    GroupMembershipState? state,
+    model.GroupMembershipState? state,
     int limit = defaultLimit,
     String? cursor,
   });
@@ -709,7 +710,7 @@ abstract class NakamaBaseClient {
     required String groupId,
     String? cursor,
     int limit = defaultLimit,
-    GroupMembershipState? state,
+    model.GroupMembershipState? state,
   });
 
   /// Add one or more users to the group.
@@ -889,7 +890,7 @@ abstract class NakamaBaseClient {
     required int score,
     int? subscore,
     String? metadata,
-    LeaderboardOperator? operator,
+    model.LeaderboardOperator? operator,
   });
 
   /// Execute an RPC function on the server.
