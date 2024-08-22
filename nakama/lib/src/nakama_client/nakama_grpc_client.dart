@@ -6,7 +6,6 @@ import 'package:grpc/grpc_connection_interface.dart';
 import 'package:logging/logging.dart';
 
 import '../api/api.dart' as api;
-import '../api/proto/api/api.pb.dart';
 import '../api/proto/apigrpc/apigrpc.pbgrpc.dart';
 import '../enum/friendship_state.dart' as model;
 import '../enum/group_membership_states.dart' as model;
@@ -840,7 +839,7 @@ class NakamaGrpcClient extends NakamaBaseClient {
           score: Int64(score),
           subscore: subscore == null ? null : Int64(subscore),
           metadata: metadata,
-          operator: Operator.valueOf(operator?.index ?? 0),
+          operator: api.Operator.valueOf(operator?.index ?? 0),
         ),
       ),
       options: _getSessionCallOptions(session),
@@ -1311,7 +1310,7 @@ class NakamaGrpcClient extends NakamaBaseClient {
         tournamentId: tournamentId,
         record: api.WriteTournamentRecordRequest_TournamentRecordWrite(
           metadata: metadata,
-          operator: Operator.valueOf(operator?.index ?? 0),
+          operator: api.Operator.valueOf(operator?.index ?? 0),
           score: score != null ? Int64(score) : null,
           subscore: subscore != null ? Int64(subscore) : null,
         ),
@@ -1403,7 +1402,7 @@ class NakamaGrpcClient extends NakamaBaseClient {
   }) async {
     await _client.importFacebookFriends(
       api.ImportFacebookFriendsRequest(
-        account: AccountFacebook(token: token, vars: vars),
+        account: api.AccountFacebook(token: token, vars: vars),
         reset: api.BoolValue(value: reset),
       ),
       options: _getSessionCallOptions(session),
@@ -1419,7 +1418,7 @@ class NakamaGrpcClient extends NakamaBaseClient {
   }) async {
     await _client.importSteamFriends(
       api.ImportSteamFriendsRequest(
-        account: AccountSteam(token: token, vars: vars),
+        account: api.AccountSteam(token: token, vars: vars),
         reset: api.BoolValue(value: reset),
       ),
       options: _getSessionCallOptions(session),
