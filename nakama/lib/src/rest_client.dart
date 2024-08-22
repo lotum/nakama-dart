@@ -18,8 +18,6 @@ import 'models/session.dart';
 import 'models/storage.dart';
 import 'models/tournament.dart';
 
-const _kDefaultAppKey = 'default';
-
 @Deprecated('This class has been renamed to [RestClient].')
 typedef NakamaRestApiClient = RestClient;
 
@@ -47,10 +45,10 @@ class RestClient extends Client {
   factory RestClient.init({
     String? host,
     String? serverKey,
-    String key = _kDefaultAppKey,
-    int port = 7350,
+    String key = defaultAppKey,
+    int port = defaultHttpPort,
     String path = '',
-    bool ssl = false,
+    bool ssl = defaultSsl,
   }) {
     if (_clients.containsKey(key)) {
       return _clients[key]!;

@@ -11,8 +11,11 @@ import 'models/session.dart';
 import 'models/storage.dart';
 import 'models/tournament.dart';
 
-const _kDefaultAppKey = 'default';
+const defaultHttpPort = 7350;
+const defaultGrpcPort = 7349;
+const defaultSsl = false;
 const defaultLimit = 20;
+const defaultAppKey = 'default';
 
 @Deprecated('This class has been renamed to [Client].')
 typedef NakamaBaseClient = Client;
@@ -25,10 +28,10 @@ abstract class Client {
   Client.init({
     String? host,
     String? serverKey,
-    String key = _kDefaultAppKey,
-    int httpPort = 7350,
-    int grpcPort = 7349,
-    bool ssl = false,
+    String key = defaultAppKey,
+    int httpPort = defaultHttpPort,
+    int grpcPort = defaultGrpcPort,
+    bool ssl = defaultSsl,
   });
 
   Client();

@@ -20,8 +20,6 @@ import 'models/session.dart';
 import 'models/storage.dart';
 import 'models/tournament.dart';
 
-const _kDefaultAppKey = 'default';
-
 @Deprecated('This class has been renamed to [GrpcClient].')
 typedef NakamaGrpcClient = GrpcClient;
 
@@ -52,9 +50,9 @@ class GrpcClient extends Client {
   factory GrpcClient.init({
     String? host,
     String? serverKey,
-    String key = _kDefaultAppKey,
-    int port = 7349,
-    bool ssl = false,
+    String key = defaultAppKey,
+    int port = defaultGrpcPort,
+    bool ssl = defaultSsl,
   }) {
     if (_clients.containsKey(key)) {
       return _clients[key]!;

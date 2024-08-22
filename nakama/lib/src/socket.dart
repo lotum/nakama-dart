@@ -6,6 +6,7 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 
 import 'api/api.dart' as api;
 import 'api/rtapi.dart' as rtapi;
+import 'client.dart';
 import 'models/channel_type.dart';
 import 'models/chat.dart';
 import 'models/match.dart';
@@ -115,10 +116,10 @@ class Socket {
   }
 
   factory Socket.init({
-    String key = 'default',
+    String key = defaultAppKey,
     required String host,
-    int port = 7350,
-    required bool ssl,
+    int port = defaultHttpPort,
+    bool ssl = defaultSsl,
     required String token,
     Function()? onDone,
     Function(dynamic error)? onError,
@@ -141,7 +142,7 @@ class Socket {
 
   Socket._({
     required this.host,
-    this.port = 7350,
+    this.port = defaultHttpPort,
     required this.ssl,
     required this.token,
     this.onDone,
