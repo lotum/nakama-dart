@@ -305,7 +305,7 @@ class NakamaWebsocketClient {
       rtapi.Envelope(matchCreate: rtapi.MatchCreate(name: name)),
     );
 
-    return Match.fromRtpb(res);
+    return Match.fromRtDto(res);
   }
 
   /// # Creating parties
@@ -422,7 +422,7 @@ class NakamaWebsocketClient {
       ),
     );
 
-    return Match.fromRtpb(res);
+    return Match.fromRtDto(res);
   }
 
   Future<void> leaveMatch(String matchId) async {

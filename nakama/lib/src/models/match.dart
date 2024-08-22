@@ -43,7 +43,7 @@ class Match with _$Match {
         presences: [],
       );
 
-  factory Match.fromRtpb(rtapi.Match dto) => Match.realtime(
+  factory Match.fromRtDto(rtapi.Match dto) => Match.realtime(
         matchId: dto.matchId,
         authoritative: dto.authoritative,
         label: dto.label.value,
