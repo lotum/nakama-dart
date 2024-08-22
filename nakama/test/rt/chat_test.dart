@@ -10,8 +10,8 @@ void main() {
   late final Session sessionA;
   late final Session sessionB;
   late final Client client;
-  late NakamaWebsocketClient socket;
-  late NakamaWebsocketClient socketB;
+  late Socket socket;
+  late Socket socketB;
 
   // Create a new websocket connection for the hole test run (singleton).
   setUpAll(() async {
@@ -38,13 +38,13 @@ void main() {
 
   setUp(() async {
     // Create main websocket connetion for lcl test.
-    socket = NakamaWebsocketClient.init(
+    socket = Socket.init(
       host: kTestHost,
       ssl: false,
       token: sessionA.token,
     );
 
-    socketB = NakamaWebsocketClient.init(
+    socketB = Socket.init(
       key: 'clientb',
       host: kTestHost,
       ssl: false,

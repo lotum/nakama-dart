@@ -15,9 +15,12 @@ import 'models/party.dart';
 import 'models/rpc.dart';
 import 'models/status.dart';
 
-class NakamaWebsocketClient {
-  static final _log = Logger('NakamaWebsocketClient');
-  static final Map<String, NakamaWebsocketClient> _clients = {};
+@Deprecated('This class has been renamed to [Socket].')
+typedef NakamaWebsocketClient = Socket;
+
+class Socket {
+  static final _log = Logger('NakamaSocket');
+  static final Map<String, Socket> _clients = {};
 
   /// The host address of the server.
   final String host;
@@ -98,12 +101,12 @@ class NakamaWebsocketClient {
   final List<Completer> _futures = [];
 
   /// Returns the default instance.
-  static NakamaWebsocketClient get instance {
-    return NakamaWebsocketClient.instanceFor(key: 'default');
+  static Socket get instance {
+    return Socket.instanceFor(key: 'default');
   }
 
   /// Returns the instance with given key.
-  static NakamaWebsocketClient instanceFor({required String key}) {
+  static Socket instanceFor({required String key}) {
     if (!_clients.containsKey(key)) {
       throw Exception('$key has not yet been initialized');
     }
@@ -111,7 +114,7 @@ class NakamaWebsocketClient {
     return _clients[key]!;
   }
 
-  factory NakamaWebsocketClient.init({
+  factory Socket.init({
     String key = 'default',
     required String host,
     int port = 7350,
@@ -126,7 +129,7 @@ class NakamaWebsocketClient {
     }
 
     // Create new and return instance of this.
-    return _clients[key] = NakamaWebsocketClient._(
+    return _clients[key] = Socket._(
       host: host,
       port: port,
       ssl: ssl,
@@ -136,7 +139,7 @@ class NakamaWebsocketClient {
     );
   }
 
-  NakamaWebsocketClient._({
+  Socket._({
     required this.host,
     this.port = 7350,
     required this.ssl,

@@ -30,7 +30,7 @@ typedef NakamaGrpcClient = GrpcClient;
 /// [GrpcClient] abstracts the gRPC calls and handles authentication
 /// for you.
 class GrpcClient extends Client {
-  static final _log = Logger('GrpcClient');
+  static final _log = Logger('NakamaGrpcClient');
   static final Map<String, GrpcClient> _clients = {};
 
   /// The host address of the server.

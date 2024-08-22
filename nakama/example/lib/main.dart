@@ -48,7 +48,7 @@ class __HomeScreenState extends State<_HomeScreen> {
 
   @override
   void dispose() {
-    NakamaWebsocketClient.instance.close();
+    Socket.instance.close();
     super.dispose();
   }
 
@@ -72,7 +72,7 @@ class __HomeScreenState extends State<_HomeScreen> {
         _account = profile;
       });
 
-      NakamaWebsocketClient.init(
+      Socket.init(
         host: '127.0.0.1',
         ssl: false,
         token: _session!.token,
