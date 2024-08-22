@@ -4,8 +4,8 @@ export 'package:fixnum/fixnum.dart' show Int64;
 
 export 'src/client.dart';
 export 'src/client_stub.dart'
-    if (dart.library.io) './src/nakama_client/stub/grpc_client.dart'
-    if (dart.library.js) './src/nakama_client/stub/api_client.dart';
+    if (dart.library.io) './src/client_io.dart'
+    if (dart.library.js) './src/client_web.dart';
 export 'src/grpc_client.dart';
 export 'src/models/account.dart';
 export 'src/models/channel_message.dart';
