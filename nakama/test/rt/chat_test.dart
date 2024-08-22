@@ -185,7 +185,10 @@ void main() {
       // Send 40 test messages
       for (final msg
           in List.generate(40, (index) => {'message': 'PING $index'})) {
-        await socketA.sendMessage(channelId: senderChannelForA.id, content: msg);
+        await socketA.sendMessage(
+          channelId: senderChannelForA.id,
+          content: msg,
+        );
       }
 
       // Check on B's side that the message was received via the REST API
@@ -215,7 +218,10 @@ void main() {
       // Send 40 test messages
       for (final msg
           in List.generate(40, (index) => {'message': 'PING $index'})) {
-        await socketA.sendMessage(channelId: senderChannelForA.id, content: msg);
+        await socketA.sendMessage(
+          channelId: senderChannelForA.id,
+          content: msg,
+        );
       }
 
       // Check on B's side that the message was received via the REST API
@@ -246,7 +252,10 @@ void main() {
       // Send 40 test messages
       for (final msg
           in List.generate(40, (index) => {'message': 'PING $index'})) {
-        await socketA.sendMessage(channelId: senderChannelForA.id, content: msg);
+        await socketA.sendMessage(
+          channelId: senderChannelForA.id,
+          content: msg,
+        );
       }
 
       // Check on B's side that the message was received via the REST API
@@ -277,7 +286,10 @@ void main() {
       // Send 20+15 test messages
       for (final msg
           in List.generate(20 + 15, (index) => {'message': 'PING $index'})) {
-        await socketA.sendMessage(channelId: senderChannelForA.id, content: msg);
+        await socketA.sendMessage(
+          channelId: senderChannelForA.id,
+          content: msg,
+        );
       }
 
       // Check on B's side that the message was received via the REST API
