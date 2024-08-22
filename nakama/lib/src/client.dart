@@ -14,12 +14,15 @@ import 'models/tournament.dart';
 const _kDefaultAppKey = 'default';
 const defaultLimit = 20;
 
+@Deprecated('This class has been renamed to [Client].')
+typedef NakamaBaseClient = Client;
+
 /// This defines the interface to communicate with Nakama API. It is a little
 /// tricky to support web (via REST) and io (via gRPC) with just one codebase
 /// so please don't use this directly but get your fitting instance with
 /// [getNakamaClient()].
-abstract class NakamaBaseClient {
-  NakamaBaseClient.init({
+abstract class Client {
+  Client.init({
     String? host,
     String? serverKey,
     String key = _kDefaultAppKey,
@@ -28,7 +31,7 @@ abstract class NakamaBaseClient {
     bool ssl = false,
   });
 
-  NakamaBaseClient();
+  Client();
 
   /// Refresh a user session and return the new session.
   ///

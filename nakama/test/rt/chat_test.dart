@@ -9,7 +9,7 @@ import '../config.dart';
 void main() {
   late final Session sessionA;
   late final Session sessionB;
-  late final NakamaBaseClient client;
+  late final Client client;
   late NakamaWebsocketClient socket;
   late NakamaWebsocketClient socketB;
 

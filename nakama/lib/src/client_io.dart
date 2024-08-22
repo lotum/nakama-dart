@@ -3,7 +3,7 @@ import 'grpc_client.dart';
 
 const _kDefaultAppKey = 'default';
 
-NakamaBaseClient getNakamaClient({
+Client getNakamaClient({
   String? host,
   String? serverKey,
   String key = _kDefaultAppKey,
@@ -11,7 +11,7 @@ NakamaBaseClient getNakamaClient({
   int grpcPort = 7349,
   bool ssl = false,
 }) =>
-    NakamaGrpcClient.init(
+    GrpcClient.init(
       host: host,
       key: key,
       port: grpcPort,
