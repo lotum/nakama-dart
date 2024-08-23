@@ -55,8 +55,3 @@ jobs:
         run: flutter build web --wasm
         working-directory: ${{ matrix.package }}
         if: matrix.package == 'nakama/example'
-
-      - name: Build Flutter app (linux)
-        run: flutter build linux
-        working-directory: ${{ matrix.package }}
-        if: matrix.package == 'nakama/example'
