@@ -5,96 +5,65 @@ import 'package:test/test.dart';
 import '../helpers.dart';
 
 void main() {
-  clientTests('Group', (helper) {
-    late final Client client;
-    late final Session session;
+  clientTests((helper) {
+    group('Group', () {
+      late final Client client;
+      late final Session session;
 
-    setUpAll(() async {
-      client = helper.createClient();
+      setUpAll(() async {
+        client = helper.createClient();
+        session = await client.authenticateDevice(deviceId: faker.guid.guid());
+      });
 
-      session = await client.authenticateDevice(deviceId: faker.guid.guid());
-    });
+      clientTest('create', () async {
+        final name = faker.guid.guid();
+        final group = await client.createGroup(session: session, name: name);
 
-    test('can create group', () async {
-      final name = faker.guid.guid();
-      final result = await client.createGroup(
-        session: session,
-        name: name,
-      );
+        expect(group.name, name);
+        expect(group.open, false);
+      });
 
-      expect(result, isA<Group>());
-      expect(result.name, equals(name));
+      clientTest('list', () async {
+        await helper.deleteAllGroups();
 
-      // Cleanup created group
-      await client.deleteGroup(
-        session: session,
-        groupId: result.id,
-      );
-    });
-
-    test('it can list groups', () async {
-      final group = await client.createGroup(
-        session: session,
-        name: faker.guid.guid(),
-      );
-
-      final result = await client.listGroups(session: session);
-
-      expect(result, isA<GroupList>());
-
-      // Cleanup created group
-      await client.deleteGroup(
-        session: session,
-        groupId: group.id,
-      );
-    });
-
-    test('it can search group by name', () async {
-      final name = faker.guid.guid();
-      final group = await client.createGroup(
-        session: session,
-        name: name,
-      );
-
-      final result = await client.listGroups(session: session, name: name);
-
-      expect(result, isA<GroupList>());
-      expect(result.groups, hasLength(1));
-
-      // Cleanup created group
-      await client.deleteGroup(
-        session: session,
-        groupId: group.id,
-      );
-    });
-
-    test('Correctly lists user\'s groups', () async {
-      final List<Group> groups = List.empty(growable: true);
-      // Create 3 groups
-      for (var i = 0; i < 3; i++) {
-        final g = await client.createGroup(
+        final group = await client.createGroup(
           session: session,
           name: faker.guid.guid(),
         );
-        groups.add(g);
-      }
 
-      // list my groups
-      final myGroups = await client.listUserGroups(
-        session: session,
-        userId: session.userId,
-      );
+        final result = await client.listGroups(session: session);
+        expect(result.groups, contains(group));
+      });
 
-      expect(myGroups, isA<UserGroupList>());
-      expect(myGroups.userGroups, hasLength(3));
+      clientTest('search by name', () async {
+        final name = faker.guid.guid();
+        final group = await client.createGroup(session: session, name: name);
+        final groupList = await client.listGroups(session: session, name: name);
 
-      // Cleanup created groups
-      for (final group in groups) {
-        await client.deleteGroup(
+        expect(groupList.groups, [group]);
+      });
+
+      clientTest('list by userId', () async {
+        await helper.deleteAllGroups();
+
+        final groups = [
+          for (var i = 0; i < 3; i++)
+            await client.createGroup(
+              session: session,
+              name: faker.guid.guid(),
+            ),
+        ];
+
+        final groupList = await client.listUserGroups(
           session: session,
-          groupId: group.id,
+          userId: session.userId,
         );
-      }
+
+        expect(
+          groupList.userGroups!.map((userGroup) => userGroup.group),
+          groups,
+        );
+      });
     });
   });
 }

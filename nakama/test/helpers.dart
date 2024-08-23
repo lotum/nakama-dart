@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:meta/meta.dart';
 import 'package:nakama/nakama.dart';
 import 'package:test/test.dart';
@@ -18,13 +20,19 @@ class TestHelper {
 
   final ClientType clientType;
 
-  Client createClient() {
+  late final Client _client = createClient(tearDown: false);
+  late final Future<Session> _session =
+      _client.authenticateCustom(id: 'test-helper-000000000');
+
+  Client createClient({bool tearDown = true}) {
     final client = switch (clientType) {
       ClientType.rest => Client.rest(host: testHost),
       ClientType.grpc => Client.grpc(host: testHost),
     };
 
-    addTearDown(client.close);
+    if (tearDown) {
+      addTearDown(client.close);
+    }
 
     return client;
   }
@@ -34,19 +42,41 @@ class TestHelper {
     addTearDown(socket.close);
     return socket;
   }
+
+  Future<void> deleteAllGroups() async =>
+      await _client.deleteAllGroups(session: await _session);
+
+  Future<void> close() async => await _client.close();
 }
 
-@isTestGroup
-void clientTests(
-  String description,
-  void Function(TestHelper helper) suite, {
-  Object? skip,
+extension on Client {
+  Future<void> deleteAllGroups({required Session session}) async =>
+      await rpc(session: session, id: 'testing.delete_all_groups');
+}
+
+void withTestHelper(
+  void Function(TestHelper helper) body, {
+  ClientType clientType = ClientType.grpc,
 }) {
+  final helper = TestHelper(clientType: clientType);
+  tearDownAll(helper.close);
+  body(helper);
+}
+
+ClientType? _testClientType;
+
+void clientTests(void Function(TestHelper helper) body) {
   for (final type in ClientType.values) {
-    group(
-      '[${type.description}] $description',
-      () => suite(TestHelper(clientType: type)),
-      skip: skip,
-    );
+    _testClientType = type;
+    try {
+      withTestHelper(body, clientType: type);
+    } finally {
+      _testClientType = null;
+    }
   }
+}
+
+@isTest
+void clientTest(String description, void Function() body) {
+  test('$description (variant: ${_testClientType!.description})', body);
 }

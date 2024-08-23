@@ -5,40 +5,35 @@ import 'package:test/test.dart';
 import '../helpers.dart';
 
 void main() {
-  clientTests('Account', (helper) {
-    late final Client client;
-    late final Session session;
+  clientTests((helper) {
+    group('Account', () {
+      late final Client client;
+      late final Session session;
 
-    setUpAll(() async {
-      client = helper.createClient();
+      setUpAll(() async {
+        client = helper.createClient();
+        session = await client.authenticateDevice(deviceId: faker.guid.guid());
+      });
 
-      session = await client.authenticateDevice(deviceId: faker.guid.guid());
-    });
+      clientTest('get account', () async {
+        final account = await client.getAccount(session);
 
-    test('fetching my account', () async {
-      final account = await client.getAccount(session);
+        expect(account.user.id, session.userId);
+      });
 
-      expect(account, isA<Account>());
-    });
+      clientTest('get users by ids', () async {
+        final otherUsersSession =
+            await client.authenticateDevice(deviceId: faker.guid.guid());
 
-    test('fetch another\'s account', () async {
-      // create another dummy user
-      final anotherUser = await client.authenticateDevice(
-        deviceId: faker.guid.guid(),
-      );
+        final users = await client
+            .getUsers(session: session, ids: [otherUsersSession.userId]);
 
-      // fetch this user
-      final users = await client.getUsers(
-        session: session,
-        ids: [anotherUser.userId],
-      );
+        expect(users.single.id, otherUsersSession.userId);
+      });
 
-      expect(users, isA<List<User>>());
-      expect(users, hasLength(1));
-    });
-
-    test('updating my account', () async {
-      await client.updateAccount(session: session, displayName: 'name');
+      clientTest('update account', () async {
+        await client.updateAccount(session: session, displayName: 'name');
+      });
     });
   });
 }

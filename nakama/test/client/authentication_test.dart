@@ -5,61 +5,63 @@ import 'package:test/test.dart';
 import '../helpers.dart';
 
 void main() {
-  clientTests('Authentication', (helper) {
-    late final Client client;
+  clientTests((helper) {
+    group('Authentication', () {
+      late final Client client;
 
-    setUpAll(() {
-      client = helper.createClient();
-    });
+      setUpAll(() {
+        client = helper.createClient();
+      });
 
-    test('sign up with email', () async {
-      final session = await client.authenticateEmail(
-        email: faker.internet.email(),
-        password: faker.internet.password(),
-        create: true,
-      );
+      clientTest('sign up with email', () async {
+        final session = await client.authenticateEmail(
+          email: faker.internet.email(),
+          password: faker.internet.password(),
+          create: true,
+        );
 
-      expect(session, isNotNull);
-    });
+        expect(session, isNotNull);
+      });
 
-    test('sign up with email and log in with username', () async {
-      final username = faker.internet.userName();
-      final password = faker.internet.password();
+      clientTest('sign up with email and log in with username', () async {
+        final username = faker.internet.userName();
+        final password = faker.internet.password();
 
-      await client.authenticateEmail(
-        email: faker.internet.email(),
-        password: password,
-        username: username,
-        create: true,
-      );
+        await client.authenticateEmail(
+          email: faker.internet.email(),
+          password: password,
+          username: username,
+          create: true,
+        );
 
-      final session = await client.authenticateEmail(
-        password: password,
-        username: username,
-        create: false,
-      );
+        final session = await client.authenticateEmail(
+          password: password,
+          username: username,
+          create: false,
+        );
 
-      expect(session, isNotNull);
-    });
+        expect(session, isNotNull);
+      });
 
-    test('login with device ID', () async {
-      final session = await client.authenticateDevice(
-        deviceId: faker.guid.guid(),
-      );
+      clientTest('login with device ID', () async {
+        final session = await client.authenticateDevice(
+          deviceId: faker.guid.guid(),
+        );
 
-      expect(session, isNotNull);
-    });
+        expect(session, isNotNull);
+      });
 
-    test('get personal account details', () async {
-      final session = await client.authenticateEmail(
-        email: faker.internet.email(),
-        password: faker.internet.password(),
-        create: true,
-      );
+      clientTest('sign up with email and get account', () async {
+        final session = await client.authenticateEmail(
+          email: faker.internet.email(),
+          password: faker.internet.password(),
+          create: true,
+        );
 
-      final account = await client.getAccount(session);
+        final account = await client.getAccount(session);
 
-      expect(account, isNotNull);
+        expect(account, isNotNull);
+      });
     });
   });
 }
