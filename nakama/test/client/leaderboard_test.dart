@@ -4,20 +4,17 @@ import 'package:faker/faker.dart';
 import 'package:nakama/nakama.dart';
 import 'package:test/test.dart';
 
-import '../config.dart';
+import '../helpers.dart';
+
 
 void main() {
-  group('[gRPC] Test Leaderboard', skip: 'TODO: add missing RPC function', () {
+  clientTests('Leaderboard', skip: 'TODO: add missing RPC function', (helper) {
     late final Client client;
     late final Session session;
     late final String leaderboardName;
 
     setUpAll(() async {
-      client = Client.grpc(
-        host: kTestHost,
-        ssl: false,
-        serverKey: kTestServerKey,
-      );
+      client = helper.createClient();
 
       session = await client.authenticateDevice(deviceId: faker.guid.guid());
 

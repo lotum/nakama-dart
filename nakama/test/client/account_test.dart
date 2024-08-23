@@ -2,19 +2,15 @@ import 'package:faker/faker.dart';
 import 'package:nakama/nakama.dart';
 import 'package:test/test.dart';
 
-import '../config.dart';
+import '../helpers.dart';
 
 void main() {
-  group('[gRPC] Test Account', () {
+  clientTests('Account', (helper) {
     late final Client client;
     late final Session session;
 
     setUpAll(() async {
-      client = Client.grpc(
-        host: kTestHost,
-        ssl: false,
-        serverKey: kTestServerKey,
-      );
+      client = helper.createClient();
 
       session = await client.authenticateDevice(deviceId: faker.guid.guid());
     });

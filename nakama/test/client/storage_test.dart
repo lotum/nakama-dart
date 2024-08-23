@@ -2,19 +2,15 @@ import 'package:faker/faker.dart';
 import 'package:nakama/nakama.dart';
 import 'package:test/test.dart';
 
-import '../config.dart';
+import '../helpers.dart';
 
 void main() {
-  group('[REST] Test Storage Engine', skip: 'TODO: fix', () {
+  clientTests('Storage Engine', skip: 'TODO: fix', (helper) {
     late final Client client;
     late final Session session;
 
     setUpAll(() async {
-      client = Client.rest(
-        host: kTestHost,
-        ssl: false,
-        serverKey: kTestServerKey,
-      );
+      client = helper.createClient();
 
       session = await client.authenticateDevice(deviceId: faker.guid.guid());
     });
@@ -27,6 +23,8 @@ void main() {
             collection: 'stats',
             key: 'skills',
             value: '{"skill": 25}',
+            permissionRead: StorageReadPermission.publicRead,
+            permissionWrite: StorageWritePermission.ownerWrite,
           ),
         ],
       );
@@ -46,7 +44,7 @@ void main() {
         ],
       );
 
-      // Cleanup written objects
+      // Cleanup created object
       await client.deleteStorageObjects(session: session, objectIds: [
         const StorageObjectId(collection: 'stats', key: 'scores'),
       ]);

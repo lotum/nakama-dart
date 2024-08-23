@@ -2,22 +2,17 @@ import 'package:faker/faker.dart';
 import 'package:nakama/nakama.dart';
 import 'package:test/test.dart';
 
-import '../config.dart';
+import '../helpers.dart';
 
 void main() {
+  final helper = TestHelper();
   late final Session sessionA;
   late final Session sessionB;
   late final Socket socketA;
   late final Socket socketB;
 
-  // Create a new websocket connection for the hole test run (singleton).
   setUpAll(() async {
-    // Create nakama clients.
-    final client = Client(
-      host: kTestHost,
-      ssl: false,
-      serverKey: kTestServerKey,
-    );
+    final client = helper.createClient();
 
     sessionA = await client.authenticateEmail(
       email: faker.internet.freeEmail(),
@@ -25,34 +20,18 @@ void main() {
       create: true,
     );
 
-    // Create main websocket connection for lcl test.
-    socketA = Socket(
-      host: kTestHost,
-      ssl: false,
-      token: sessionA.token,
-    );
+    socketA = helper.createSocket(sessionA);
 
-    // Create another websocket connection for another user.
     sessionB = await client.authenticateEmail(
       email: faker.internet.freeEmail(),
       password: faker.internet.password(),
       create: true,
     );
 
-    // Create main websocket connection for lcl test.
-    socketB = Socket(
-      host: kTestHost,
-      ssl: false,
-      token: sessionB.token,
-    );
+    socketB = helper.createSocket(sessionB);
   });
 
-  tearDownAll(() async {
-    await socketA.close();
-    await socketB.close();
-  });
-
-  group('[RT] Match Test', () {
+  group('[Socket] Match', () {
     test('can join a match', () async {
       final match = await socketA.createMatch();
       expect(match, isA<Match>());

@@ -2,18 +2,14 @@ import 'package:faker/faker.dart';
 import 'package:nakama/nakama.dart';
 import 'package:test/test.dart';
 
-import '../config.dart';
+import '../helpers.dart';
 
 void main() {
-  group('[gRPC] Test Authentication', () {
+  clientTests('Authentication', (helper) {
     late final Client client;
 
     setUpAll(() {
-      client = Client.grpc(
-        host: kTestHost,
-        ssl: false,
-        serverKey: kTestServerKey,
-      );
+      client = helper.createClient();
     });
 
     test('sign up with email', () async {

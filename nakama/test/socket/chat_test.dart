@@ -4,23 +4,18 @@ import 'package:faker/faker.dart';
 import 'package:nakama/nakama.dart';
 import 'package:test/test.dart';
 
-import '../config.dart';
+import '../helpers.dart';
 
 void main() {
+  final helper = TestHelper();
   late final Session sessionA;
   late final Session sessionB;
   late final Client client;
   late Socket socketA;
   late Socket socketB;
 
-  // Create a new websocket connection for the hole test run (singleton).
   setUpAll(() async {
-    // Create nakama clients.
-    client = Client(
-      host: kTestHost,
-      ssl: false,
-      serverKey: kTestServerKey,
-    );
+    client = helper.createClient();
 
     sessionA = await client.authenticateEmail(
       email: faker.internet.freeEmail(),
@@ -28,7 +23,6 @@ void main() {
       create: true,
     );
 
-    // Create another websocket connection for another user.
     sessionB = await client.authenticateEmail(
       email: faker.internet.freeEmail(),
       password: faker.internet.password(),
@@ -37,26 +31,11 @@ void main() {
   });
 
   setUp(() async {
-    // Create main websocket connection for lcl test.
-    socketA = Socket(
-      host: kTestHost,
-      ssl: false,
-      token: sessionA.token,
-    );
-
-    socketB = Socket(
-      host: kTestHost,
-      ssl: false,
-      token: sessionB.token,
-    );
+    socketA = helper.createSocket(sessionA);
+    socketB = helper.createSocket(sessionB);
   });
 
-  tearDown(() async {
-    await socketA.close();
-    await socketB.close();
-  });
-
-  group('[REST] Test Chat', () {
+  group('[Socket] Chat', () {
     test('can create a channel', () async {
       final roomCode = faker.lorem.words(2).join('-');
 
@@ -133,7 +112,7 @@ void main() {
       expect(messageId, isNotEmpty);
     });
 
-    test('user can recieve a private message', () async {
+    test('user can receive a private message', () async {
       // Both users need to be online to receive messages
       final senderChannelForA = await socketA.joinChannel(
         target: sessionB.userId,
