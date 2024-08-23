@@ -13,7 +13,10 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        package: [nakama, satori]
+        package:
+          - nakama
+          - nakama/example
+          - satori
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -42,3 +45,18 @@ jobs:
         run: dart test --concurrency 1
         working-directory: ${{ matrix.package }}
         if: matrix.package == 'nakama'
+
+      - name: Build Flutte app (web)
+        run: flutter build web
+        working-directory: ${{ matrix.package }}
+        if: matrix.package == 'nakama/example'
+
+      - name: Build Flutte app (web,wasm)
+        run: flutter build web --wasm
+        working-directory: ${{ matrix.package }}
+        if: matrix.package == 'nakama/example'
+
+      - name: Build Flutte app (linux)
+        run: flutter build linux
+        working-directory: ${{ matrix.package }}
+        if: matrix.package == 'nakama/example'
