@@ -1,18 +1,17 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'response_error.dart';
+part of 'nakama_error.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-ResponseError _$ResponseErrorFromJson(Map<String, dynamic> json) =>
-    ResponseError(
+NakamaError _$NakamaErrorFromJson(Map<String, dynamic> json) => NakamaError(
       code: json['code'] as int?,
       message: json['message'] as String?,
     );
 
-Map<String, dynamic> _$ResponseErrorToJson(ResponseError instance) =>
+Map<String, dynamic> _$NakamaErrorToJson(NakamaError instance) =>
     <String, dynamic>{
       'code': instance.code,
       'message': instance.message,
