@@ -10,13 +10,13 @@ import 'api/proto/apigrpc/apigrpc.pbgrpc.dart';
 import 'client.dart';
 import 'models/account.dart';
 import 'models/channel_message.dart';
+import 'models/error.dart';
 import 'models/friends.dart';
 import 'models/friendship_state.dart';
 import 'models/group.dart';
 import 'models/group_membership_states.dart';
 import 'models/leaderboard.dart';
 import 'models/match.dart';
-import 'models/nakama_error.dart';
 import 'models/notification.dart';
 import 'models/session.dart';
 import 'models/storage.dart';
@@ -111,7 +111,10 @@ final class GrpcClient extends ClientBase {
   @override
   NakamaError? translateException(Exception exception) {
     if (exception is GrpcError) {
-      return NakamaError(code: exception.code, message: exception.message);
+      return NakamaError(
+        code: ErrorCode(exception.code),
+        message: exception.message,
+      );
     }
     return null;
   }
