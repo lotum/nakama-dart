@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:logging/logging.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 import 'api/api.dart' as api;
@@ -141,8 +140,6 @@ class SocketImpl implements Socket {
         _onDisconnect = onDisconnect,
         _client = client;
 
-  static final _log = Logger('NakamaSocket');
-
   final Client _client;
   final void Function()? _onDisconnect;
   final void Function(Object error, StackTrace stackTrace)? _onError;
@@ -220,18 +217,12 @@ class SocketImpl implements Socket {
   }
 
   void _onData(List<int> msg) {
-    try {
-      final envelope = rtapi.Envelope.fromBuffer(msg);
-      _log.info('onData: $envelope');
+    final envelope = rtapi.Envelope.fromBuffer(msg);
 
-      if (envelope.cid.isNotEmpty) {
-        _handleResponse(envelope);
-      } else {
-        _handleEvent(envelope);
-      }
-    } catch (e, s) {
-      _log.warning(e);
-      _log.warning(s);
+    if (envelope.cid.isNotEmpty) {
+      _handleResponse(envelope);
+    } else {
+      _handleEvent(envelope);
     }
   }
 
@@ -299,8 +290,8 @@ class SocketImpl implements Socket {
         );
       case rtapi.Envelope_Message.channelMessage:
         _addToEventStream(envelope.channelMessage);
-      default:
-        _log.warning('Not implemented');
+      case final type:
+        throw UnimplementedError('Event type ${type.name} is not implemented.');
     }
   }
 
@@ -322,9 +313,6 @@ class SocketImpl implements Socket {
 
     final token = session.token;
 
-    _log.info('Connecting ${ssl ? 'WSS' : 'WS'} to $host:$port');
-    _log.info('Using token $token');
-
     final uri = Uri(
       host: host,
       port: port,
@@ -336,10 +324,9 @@ class SocketImpl implements Socket {
       },
     );
     _channel = WebSocketChannel.connect(uri);
-    _log.info('connected');
 
-    _channel!.stream.listen(
-      (message) => _onData(message as List<int>),
+    _channel!.stream.map((message) => _onData(message as List<int>)).listen(
+      (_) {},
       onDone: () {
         if (_onDisconnect != null) {
           _onDisconnect!();
@@ -349,6 +336,8 @@ class SocketImpl implements Socket {
       onError: (error, stackTrace) {
         if (_onError != null) {
           _onError!(error, stackTrace);
+        } else {
+          Error.throwWithStackTrace(error, stackTrace);
         }
       },
       cancelOnError: false,
