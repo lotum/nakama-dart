@@ -215,21 +215,25 @@ class SocketImpl implements Socket {
   }
 
   Completer<T> _pendingRequestCompleter<T>(String cid) {
-    if (cid.isEmpty) {
-      throw ArgumentError.value(cid, 'cid', 'must not be empty');
+    final completer = _requestCompleters.remove(int.parse(cid));
+
+    if (completer == null) {
+      throw StateError('No pending request completer found for CID: $cid');
     }
-    // TODO: Handle unknown cid
-    final completer = _requestCompleters.remove(int.parse(cid))!;
+
     if (completer is! Completer<T>) {
-      throw StateError('Unexpected completer type: ${completer.runtimeType}');
+      throw StateError(
+        'Expected Completer<$T> but found ${completer.runtimeType}',
+      );
     }
+
     return completer;
   }
 
   void _completePendingRequest<T>(String cid, T response) =>
       _pendingRequestCompleter(cid).complete(response);
 
-  Future<T> _sendRequest<T>(
+  Future<T> _send<T>(
     rtapi.Envelope envelope, {
     bool waitForResponse = true,
   }) async {
@@ -423,7 +427,7 @@ class SocketImpl implements Socket {
 
   @override
   Future<void> updateStatus(String status) {
-    return _sendRequest(
+    return _send(
       rtapi.Envelope(
         statusUpdate: rtapi.StatusUpdate(
           status: api.StringValue(value: status),
@@ -434,7 +438,7 @@ class SocketImpl implements Socket {
 
   @override
   Future<Match> createMatch([String? name]) {
-    return _sendRequest(
+    return _send(
       rtapi.Envelope(
         matchCreate: rtapi.MatchCreate(name: name),
       ),
@@ -443,7 +447,7 @@ class SocketImpl implements Socket {
 
   @override
   Future<Party> createParty({int? maxSize, bool? open}) {
-    return _sendRequest(
+    return _send(
       rtapi.Envelope(
         partyCreate: rtapi.PartyCreate(
           maxSize: maxSize,
@@ -455,7 +459,7 @@ class SocketImpl implements Socket {
 
   @override
   Future<Party> joinParty(String partyId) {
-    return _sendRequest(
+    return _send(
       rtapi.Envelope(
         partyJoin: rtapi.PartyJoin(partyId: partyId),
       ),
@@ -464,7 +468,7 @@ class SocketImpl implements Socket {
 
   @override
   Future<void> promotePartyMember(String partyId, UserPresence user) {
-    return _sendRequest(
+    return _send(
       rtapi.Envelope(
         partyPromote: rtapi.PartyPromote(
           partyId: partyId,
@@ -476,7 +480,7 @@ class SocketImpl implements Socket {
 
   @override
   Future<void> leaveParty(String partyId) {
-    return _sendRequest(
+    return _send(
       rtapi.Envelope(
         partyLeave: rtapi.PartyLeave(partyId: partyId),
       ),
@@ -485,7 +489,7 @@ class SocketImpl implements Socket {
 
   @override
   Future<void> acceptPartyMember(String partyId, UserPresence user) {
-    return _sendRequest(
+    return _send(
       rtapi.Envelope(
         partyAccept: rtapi.PartyAccept(
           partyId: partyId,
@@ -497,7 +501,7 @@ class SocketImpl implements Socket {
 
   @override
   Future<void> removePartyMember(String partyId, UserPresence user) {
-    return _sendRequest(
+    return _send(
       rtapi.Envelope(
         partyRemove: rtapi.PartyRemove(
           partyId: partyId,
@@ -516,7 +520,7 @@ class SocketImpl implements Socket {
     Map<String, double>? numericProperties,
     Map<String, String>? stringProperties,
   }) {
-    return _sendRequest(
+    return _send(
       rtapi.Envelope(
         partyMatchmakerAdd: rtapi.PartyMatchmakerAdd(
           partyId: partyId,
@@ -532,7 +536,7 @@ class SocketImpl implements Socket {
 
   @override
   Future<void> closeParty(String partyId) {
-    return _sendRequest(
+    return _send(
       rtapi.Envelope(
         partyClose: rtapi.PartyClose(partyId: partyId),
       ),
@@ -544,7 +548,7 @@ class SocketImpl implements Socket {
     String matchId, {
     String? token,
   }) {
-    return _sendRequest(
+    return _send(
       rtapi.Envelope(
         matchJoin: rtapi.MatchJoin(matchId: matchId, token: token),
       ),
@@ -553,7 +557,7 @@ class SocketImpl implements Socket {
 
   @override
   Future<void> leaveMatch(String matchId) {
-    return _sendRequest(
+    return _send(
       rtapi.Envelope(
         matchLeave: rtapi.MatchLeave(matchId: matchId),
       ),
@@ -568,7 +572,7 @@ class SocketImpl implements Socket {
     Map<String, double>? numericProperties,
     Map<String, String>? stringProperties,
   }) {
-    return _sendRequest(
+    return _send(
       rtapi.Envelope(
         matchmakerAdd: rtapi.MatchmakerAdd(
           maxCount: maxCount,
@@ -583,7 +587,7 @@ class SocketImpl implements Socket {
 
   @override
   Future<void> removeMatchmaker(String ticket) {
-    return _sendRequest(
+    return _send(
       rtapi.Envelope(
         matchmakerRemove: rtapi.MatchmakerRemove(ticket: ticket),
       ),
@@ -592,7 +596,7 @@ class SocketImpl implements Socket {
 
   @override
   Future<Rpc> rpc({required String id, String? payload}) {
-    return _sendRequest(
+    return _send(
       rtapi.Envelope(
         rpc: api.Rpc(id: id, payload: payload),
       ),
@@ -604,7 +608,7 @@ class SocketImpl implements Socket {
     List<String>? userIds,
     List<String>? usernames,
   }) {
-    return _sendRequest(
+    return _send(
       rtapi.Envelope(
         statusFollow: rtapi.StatusFollow(
           userIds: userIds,
@@ -616,7 +620,7 @@ class SocketImpl implements Socket {
 
   @override
   Future<List<UserPresence>> unfollowUsers(List<String> userIds) {
-    return _sendRequest(
+    return _send(
       rtapi.Envelope(
         statusUnfollow: rtapi.StatusUnfollow(
           userIds: userIds,
@@ -632,7 +636,7 @@ class SocketImpl implements Socket {
     required List<int> data,
     Iterable<UserPresence>? users,
   }) {
-    return _sendRequest(
+    return _send(
       waitForResponse: false,
       rtapi.Envelope(
         matchDataSend: rtapi.MatchDataSend(
@@ -651,7 +655,7 @@ class SocketImpl implements Socket {
     required int opCode,
     required List<int> data,
   }) {
-    return _sendRequest(
+    return _send(
       waitForResponse: false,
       rtapi.Envelope(
         partyDataSend: rtapi.PartyDataSend(
@@ -670,7 +674,7 @@ class SocketImpl implements Socket {
     required bool persistence,
     required bool hidden,
   }) {
-    return _sendRequest(
+    return _send(
       rtapi.Envelope(
         channelJoin: rtapi.ChannelJoin(
           target: target,
@@ -689,7 +693,7 @@ class SocketImpl implements Socket {
 
   @override
   Future<void> leaveChannel(String channelId) {
-    return _sendRequest(
+    return _send(
       rtapi.Envelope(
         channelLeave: rtapi.ChannelLeave(channelId: channelId),
       ),
@@ -701,7 +705,7 @@ class SocketImpl implements Socket {
     required String channelId,
     required Map<String, String> content,
   }) {
-    return _sendRequest(
+    return _send(
       rtapi.Envelope(
         channelMessageSend: rtapi.ChannelMessageSend(
           channelId: channelId,
@@ -717,7 +721,7 @@ class SocketImpl implements Socket {
     required String messageId,
     required Map<String, String> content,
   }) {
-    return _sendRequest(
+    return _send(
       rtapi.Envelope(
         channelMessageUpdate: rtapi.ChannelMessageUpdate(
           channelId: channelId,
