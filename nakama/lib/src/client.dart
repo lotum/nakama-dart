@@ -986,7 +986,7 @@ abstract base class ClientBase implements Client {
       try {
         await sessionRefresh(vars: vars);
         // ignore: empty_catches
-      } catch (e) {
+      } catch (_) {
         // If the session refresh fails, continue with the normal flow.
       }
     }
