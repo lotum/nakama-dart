@@ -982,7 +982,7 @@ abstract base class ClientBase implements Client {
   }) async {
     if (session
         case Session(isExpired: true, isRefreshExpired: false, :final vars)
-        when autoRefreshSession) {
+        when autoRefreshSession && this.autoRefreshSession) {
       try {
         await sessionRefresh(vars: vars);
         // ignore: empty_catches
