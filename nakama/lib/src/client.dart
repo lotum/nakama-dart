@@ -1010,7 +1010,7 @@ abstract base class ClientBase implements Client {
             #_httpKey: httpKey ?? serverKey,
           },
         );
-      } on Exception catch (exception) {
+      } on Exception catch (exception, stackTrace) {
         if (translateException(exception) case final translatedException?) {
           if (await retryPolicy.shouldRetry(
             attempt,
@@ -1021,7 +1021,11 @@ abstract base class ClientBase implements Client {
 
           throw translatedException;
         }
-        rethrow;
+
+        Error.throwWithStackTrace(
+          NakamaError(code: ErrorCode.internal, message: '$exception'),
+          stackTrace,
+        );
       }
     }
   }
