@@ -83,12 +83,8 @@ final class RestClient extends ClientBase {
   @override
   NakamaError? translateException(Exception exception) {
     return switch (exception) {
-      DioException(
-        :final type,
-        :final response,
-        :final stackTrace
-      ) =>
-        switch (type) {
+      DioException(:final type, :final response, :final stackTrace) => switch (
+            type) {
           DioExceptionType.badResponse => () {
               try {
                 if (response != null) {
