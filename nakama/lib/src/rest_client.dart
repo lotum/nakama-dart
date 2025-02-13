@@ -83,9 +83,41 @@ final class RestClient extends ClientBase {
   @override
   NakamaError? translateException(Exception exception) {
     return switch (exception) {
-      DioException(:final response?) => NakamaError.fromJson(response.data),
-      DioException(type: DioExceptionType.connectionError, :final error) =>
-        NakamaError(code: ErrorCode.unavailable, message: error?.toString()),
+      DioException(:final type, :final response, :final stackTrace) => switch (
+            type) {
+          DioExceptionType.badResponse => () {
+              try {
+                if (response != null) {
+                  final json = jsonDecode(response.toString());
+                  return NakamaError.fromJson(json);
+                }
+                // ignore: empty_catches
+              } catch (e) {}
+
+              return NakamaError(
+                code: ErrorCode.unknown,
+                message: response?.toString() ?? exception.toString(),
+              );
+            }(),
+          DioExceptionType.badCertificate ||
+          DioExceptionType.connectionError =>
+            NakamaError(
+              code: ErrorCode.unavailable,
+              message: exception.toString(),
+            ),
+          DioExceptionType.connectionTimeout ||
+          DioExceptionType.receiveTimeout ||
+          DioExceptionType.sendTimeout =>
+            NakamaError(
+              code: ErrorCode.deadlineExceeded,
+              message: exception.toString(),
+            ),
+          DioExceptionType.unknown => NakamaError(
+              code: ErrorCode.unknown,
+              message: '$exception\n$stackTrace',
+            ),
+          DioExceptionType.cancel => null,
+        },
       _ => null,
     };
   }
