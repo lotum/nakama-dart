@@ -82,10 +82,17 @@ final class RestClient extends ClientBase {
 
   @override
   NakamaError? translateException(Exception exception) {
+    const unavailableHttpErrorMessages = [
+      'Connection closed before full header was received',
+      'Software caused connection abort',
+      'Connection closed while receiving data',
+    ];
+
     return switch (exception) {
       DioException(
         :final type,
         :final response,
+        :final error,
         :final stackTrace,
       ) =>
         switch (type) {
@@ -117,7 +124,17 @@ final class RestClient extends ClientBase {
               message: exception.toString(),
             ),
           DioExceptionType.unknown => NakamaError(
-              code: ErrorCode.unknown,
+              code: switch (error) {
+                // Workaround for bad response from Nakama Server.
+                // https://github.com/heroiclabs/nakama/issues/1264
+                HttpException(:final message)
+                    when message.contains('Failed to parse header value') =>
+                  ErrorCode.unauthenticated,
+                HttpException(:final message)
+                    when unavailableHttpErrorMessages.contains(message) =>
+                  ErrorCode.unavailable,
+                _ => ErrorCode.unknown,
+              },
               message: '$exception\n$stackTrace',
             ),
           DioExceptionType.cancel => null,
