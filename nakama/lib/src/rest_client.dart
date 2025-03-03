@@ -82,12 +82,6 @@ final class RestClient extends ClientBase {
 
   @override
   NakamaError? translateException(Exception exception) {
-    const unavailableHttpErrorMessages = [
-      'Connection closed before full header was received',
-      'Software caused connection abort',
-      'Connection closed while receiving data',
-    ];
-
     return switch (exception) {
       DioException(
         :final type,
@@ -130,8 +124,8 @@ final class RestClient extends ClientBase {
                 HttpException(:final message)
                     when message.contains('Failed to parse header value') =>
                   ErrorCode.unauthenticated,
-                HttpException(:final message)
-                    when unavailableHttpErrorMessages.contains(message) =>
+                HttpException() ||
+                HandshakeException() =>
                   ErrorCode.unavailable,
                 _ => ErrorCode.unknown,
               },
