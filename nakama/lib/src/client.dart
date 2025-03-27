@@ -46,6 +46,9 @@ abstract interface class Client {
   /// The default [RetryPolicy] to use when making requests.
   static const defaultRetryPolicy = ExponentialBackoff.defaultPolicy;
 
+  /// The default request timeout.
+  static const defaultRequestTimeout = Duration(seconds: 7);
+
   /// Creates a new client that uses the optimal protocol for the current
   /// platform.
   ///
@@ -63,6 +66,7 @@ abstract interface class Client {
     String serverKey = Client.defaultServerKey,
     RetryPolicy retryPolicy = Client.defaultRetryPolicy,
     bool autoRefreshSession = true,
+    Duration requestTimeout = defaultRequestTimeout,
   }) =>
       createClient(
         host: host,
@@ -72,6 +76,7 @@ abstract interface class Client {
         serverKey: serverKey,
         retryPolicy: retryPolicy,
         autoRefreshSession: autoRefreshSession,
+        callTimeout: requestTimeout,
       );
 
   /// Creates a new client that uses the REST protocol.
@@ -87,6 +92,7 @@ abstract interface class Client {
     String serverKey = Client.defaultServerKey,
     RetryPolicy retryPolicy = Client.defaultRetryPolicy,
     bool autoRefreshSession = true,
+    Duration requestTimeout = defaultRequestTimeout,
   }) =>
       RestClient(
         host: host,
@@ -96,6 +102,7 @@ abstract interface class Client {
         serverKey: serverKey,
         retryPolicy: retryPolicy,
         autoRefreshSession: autoRefreshSession,
+        requestTimeout: requestTimeout,
       );
 
   /// Creates a new client that uses the gRPC protocol.
@@ -111,6 +118,7 @@ abstract interface class Client {
     String serverKey = Client.defaultServerKey,
     RetryPolicy retryPolicy = Client.defaultRetryPolicy,
     bool autoRefreshSession = true,
+    Duration requestTimeout = defaultRequestTimeout,
   }) =>
       GrpcClient(
         host: host,
@@ -120,6 +128,7 @@ abstract interface class Client {
         serverKey: serverKey,
         retryPolicy: retryPolicy,
         autoRefreshSession: autoRefreshSession,
+        requestTimeout: requestTimeout,
       );
 
   /// The host of the server.

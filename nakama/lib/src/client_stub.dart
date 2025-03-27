@@ -9,6 +9,7 @@ Client createClient({
   required String serverKey,
   required RetryPolicy retryPolicy,
   required bool autoRefreshSession,
+  required Duration callTimeout,
 }) =>
     throw UnsupportedError(
       'Nakama is not supported outside IO/JS runtime.',

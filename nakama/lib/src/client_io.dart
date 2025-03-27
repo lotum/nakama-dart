@@ -10,6 +10,7 @@ Client createClient({
   required String serverKey,
   required RetryPolicy retryPolicy,
   required bool autoRefreshSession,
+  required Duration requestTimeout,
 }) =>
     GrpcClient(
       host: host,
@@ -19,4 +20,5 @@ Client createClient({
       serverKey: serverKey,
       retryPolicy: retryPolicy,
       autoRefreshSession: autoRefreshSession,
+      requestTimeout: requestTimeout,
     );

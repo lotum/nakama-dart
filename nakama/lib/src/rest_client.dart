@@ -35,6 +35,7 @@ final class RestClient extends ClientBase {
     required String serverKey,
     required RetryPolicy retryPolicy,
     required bool autoRefreshSession,
+    required Duration requestTimeout,
   }) {
     final baseUrl = Uri(
       host: host,
@@ -42,7 +43,12 @@ final class RestClient extends ClientBase {
       port: httpPort,
       path: path,
     );
-    final dio = Dio(BaseOptions(baseUrl: baseUrl.toString()));
+    final dio = Dio(BaseOptions(
+      baseUrl: baseUrl.toString(),
+      connectTimeout: requestTimeout,
+      sendTimeout: requestTimeout,
+      receiveTimeout: requestTimeout,
+    ));
     final api = ApiClient(dio, baseUrl: baseUrl.toString());
     return RestClient._(
       host: host,
