@@ -5,6 +5,7 @@ let InitModule: nkruntime.InitModule = function (
   initializer: nkruntime.Initializer
 ) {
   initializer.registerRpc('testing.echo', rpcTestingEcho)
+  initializer.registerRpc('testing.sleep', rpcTestingSleep)
   initializer.registerRpc(
     'testing.delete_all_groups',
     rpcTestingDeleteAllGroups
@@ -22,6 +23,17 @@ function rpcTestingEcho(
   payload: string
 ) {
   return payload
+}
+
+function rpcTestingSleep(
+  ctx: nkruntime.Context,
+  logger: nkruntime.Logger,
+  nk: nkruntime.Nakama,
+  payload: string
+) {
+  const args = JSON.parse(payload)
+  const endTime = Date.now() + args.duration
+  while (Date.now() < endTime) {}
 }
 
 function rpcTestingDeleteAllGroups(
