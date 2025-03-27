@@ -76,7 +76,7 @@ abstract interface class Client {
         serverKey: serverKey,
         retryPolicy: retryPolicy,
         autoRefreshSession: autoRefreshSession,
-        callTimeout: requestTimeout,
+        requestTimeout: requestTimeout,
       );
 
   /// Creates a new client that uses the REST protocol.
