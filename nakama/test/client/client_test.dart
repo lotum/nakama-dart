@@ -21,6 +21,28 @@ void main() {
       },
     );
 
+    for (final timeout in [
+      const Duration(milliseconds: 1),
+      const Duration(seconds: 1),
+      const Duration(seconds: 5)
+    ]) {
+      clientTest('timeout requests after requestTimeout ($timeout)', () async {
+        // We us a separate client for authentication because the short timeouts
+        // would cause the authentication request to fail before it completes.
+        final authClient = helper.createClient();
+        await authClient.authenticateCustom(id: faker.guid.guid());
+
+        final client = helper.createClient(requestTimeout: timeout);
+        client.session = authClient.session;
+        await expectLater(
+          client.sleep(timeout + const Duration(seconds: 1)),
+          throwsA(
+            isA<NakamaError>().havingCode(ErrorCode.deadlineExceeded),
+          ),
+        );
+      });
+    }
+
     clientTest('healthcheck', () async {
       await helper.createClient().healthcheck();
     });

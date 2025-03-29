@@ -26,17 +26,23 @@ class TestHelper {
     return client;
   });
 
-  Client createClient({bool tearDown = true, bool toAvailableServer = true}) {
+  Client createClient({
+    bool tearDown = true,
+    bool toAvailableServer = true,
+    Duration requestTimeout = Client.defaultRequestTimeout,
+  }) {
     final client = switch (clientType) {
       ClientType.rest => Client.rest(
           host: testHost,
           httpPort: toAvailableServer ? Client.defaultHttpPort : 1,
           grpcPort: toAvailableServer ? Client.defaultGrpcPort : 1,
+          requestTimeout: requestTimeout,
         ),
       ClientType.grpc => Client.grpc(
           host: testHost,
           httpPort: toAvailableServer ? Client.defaultHttpPort : 1,
           grpcPort: toAvailableServer ? Client.defaultGrpcPort : 1,
+          requestTimeout: requestTimeout,
         ),
     };
 
@@ -81,6 +87,11 @@ extension RpcTestingExtensions on Client {
     String? httpKey,
   }) =>
       rpc(id: 'testing.echo', payload: input, httpKey: httpKey);
+
+  Future<void> sleep(Duration duration) async => await rpc(
+        id: 'testing.sleep',
+        payload: {'duration': duration.inMilliseconds},
+      );
 
   Future<void> deleteAllGroups() async =>
       await rpc(id: 'testing.delete_all_groups');

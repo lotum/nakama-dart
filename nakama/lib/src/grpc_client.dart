@@ -59,11 +59,13 @@ final class GrpcClient extends ClientBase {
     required String serverKey,
     required RetryPolicy retryPolicy,
     required bool autoRefreshSession,
+    required Duration requestTimeout,
   }) {
     final channel = ClientChannel(
       host,
       port: grpcPort,
       options: ChannelOptions(
+        connectTimeout: requestTimeout,
         credentials: ssl == true
             ? const ChannelCredentials.secure()
             : const ChannelCredentials.insecure(),
@@ -72,6 +74,7 @@ final class GrpcClient extends ClientBase {
     final authenticationInterceptor = _AuthenticationInterceptor();
     final client = NakamaClient(
       channel,
+      options: CallOptions(timeout: requestTimeout),
       interceptors: [authenticationInterceptor],
     );
 
