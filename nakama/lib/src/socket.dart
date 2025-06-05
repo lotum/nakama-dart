@@ -131,14 +131,14 @@ abstract class Socket {
 class SocketImpl implements Socket {
   SocketImpl({
     required Client client,
-    void Function(int code, String reason)? onDisconnect,
+    void Function(int? code, String? reason)? onDisconnect,
     void Function(Object error, StackTrace stackTrace)? onError,
   })  : _onError = onError,
         _onDisconnect = onDisconnect,
         _client = client;
 
   final Client _client;
-  final void Function(int code, String reason)? _onDisconnect;
+  final void Function(int? code, String? reason)? _onDisconnect;
   final void Function(Object error, StackTrace stackTrace)? _onError;
   WebSocketChannel? _webSocket;
   Completer<void>? _webSocketDisconnectedCompleter;
@@ -372,7 +372,7 @@ class SocketImpl implements Socket {
       (_) {},
       onDone: () {
         if (_onDisconnect != null) {
-          _onDisconnect!(webSocket.closeCode!, webSocket.closeReason!);
+          _onDisconnect!(webSocket.closeCode, webSocket.closeReason);
         }
 
         _webSocket = null;
