@@ -131,7 +131,7 @@ abstract class Socket {
 class SocketImpl implements Socket {
   SocketImpl({
     required Client client,
-    void Function(int code, String reason)? onDisconnect,
+    void Function(int? code, String? reason)? onDisconnect,
     void Function(Object error, StackTrace stackTrace)? onError,
   })  : _onError = onError,
         _onDisconnect = onDisconnect,
