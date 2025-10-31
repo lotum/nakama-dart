@@ -6,7 +6,7 @@ part 'channel_message.freezed.dart';
 part 'channel_message.g.dart';
 
 @freezed
-class ChannelMessage with _$ChannelMessage {
+abstract class ChannelMessage with _$ChannelMessage {
   const ChannelMessage._();
 
   const factory ChannelMessage({
@@ -46,7 +46,7 @@ class ChannelMessage with _$ChannelMessage {
 }
 
 @freezed
-class ChannelMessageList with _$ChannelMessageList {
+abstract class ChannelMessageList with _$ChannelMessageList {
   const ChannelMessageList._();
 
   const factory ChannelMessageList({

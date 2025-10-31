@@ -6,7 +6,7 @@ import 'status.dart';
 part 'matchmaker.freezed.dart';
 
 @freezed
-class MatchmakerTicket with _$MatchmakerTicket {
+abstract class MatchmakerTicket with _$MatchmakerTicket {
   const MatchmakerTicket._();
 
   const factory MatchmakerTicket({
@@ -21,7 +21,7 @@ class MatchmakerTicket with _$MatchmakerTicket {
 }
 
 @freezed
-class PartyMatchmakerTicket with _$PartyMatchmakerTicket {
+abstract class PartyMatchmakerTicket with _$PartyMatchmakerTicket {
   const PartyMatchmakerTicket._();
 
   const factory PartyMatchmakerTicket({
@@ -40,7 +40,7 @@ class PartyMatchmakerTicket with _$PartyMatchmakerTicket {
 }
 
 @freezed
-class ChannelPresenceEvent with _$ChannelPresenceEvent {
+abstract class ChannelPresenceEvent with _$ChannelPresenceEvent {
   const ChannelPresenceEvent._();
 
   const factory ChannelPresenceEvent({
@@ -87,7 +87,7 @@ class ChannelPresenceEvent with _$ChannelPresenceEvent {
 }
 
 @freezed
-class MatchmakerUser with _$MatchmakerUser {
+abstract class MatchmakerUser with _$MatchmakerUser {
   const MatchmakerUser._();
 
   const factory MatchmakerUser({
@@ -116,7 +116,7 @@ class MatchmakerUser with _$MatchmakerUser {
 }
 
 @freezed
-class MatchmakerMatched with _$MatchmakerMatched {
+abstract class MatchmakerMatched with _$MatchmakerMatched {
   const MatchmakerMatched._();
 
   const factory MatchmakerMatched({
@@ -149,7 +149,7 @@ class MatchmakerMatched with _$MatchmakerMatched {
 }
 
 @freezed
-class MatchData with _$MatchData {
+abstract class MatchData with _$MatchData {
   const MatchData._();
 
   const factory MatchData({
@@ -179,7 +179,7 @@ class MatchData with _$MatchData {
 }
 
 @freezed
-class MatchPresenceEvent with _$MatchPresenceEvent {
+abstract class MatchPresenceEvent with _$MatchPresenceEvent {
   const MatchPresenceEvent._();
 
   const factory MatchPresenceEvent({

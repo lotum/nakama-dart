@@ -7,7 +7,7 @@ part 'tournament.freezed.dart';
 part 'tournament.g.dart';
 
 @freezed
-class Tournament with _$Tournament {
+abstract class Tournament with _$Tournament {
   const Tournament._();
 
   const factory Tournament({
@@ -58,7 +58,7 @@ class Tournament with _$Tournament {
 }
 
 @freezed
-class TournamentList with _$TournamentList {
+abstract class TournamentList with _$TournamentList {
   const TournamentList._();
 
   const factory TournamentList({
@@ -78,7 +78,7 @@ class TournamentList with _$TournamentList {
 }
 
 @freezed
-class TournamentRecordList with _$TournamentRecordList {
+abstract class TournamentRecordList with _$TournamentRecordList {
   const TournamentRecordList._();
 
   const factory TournamentRecordList({

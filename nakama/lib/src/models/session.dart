@@ -7,7 +7,7 @@ import '../api/rest.dart';
 part 'session.freezed.dart';
 
 @freezed
-class Session with _$Session {
+abstract class Session with _$Session {
   const Session._();
 
   factory Session({
