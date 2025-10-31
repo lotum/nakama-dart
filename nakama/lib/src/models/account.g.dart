@@ -6,8 +6,7 @@ part of 'account.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$AccountImpl _$$AccountImplFromJson(Map<String, dynamic> json) =>
-    _$AccountImpl(
+_Account _$AccountFromJson(Map<String, dynamic> json) => _Account(
       wallet: json['wallet'] as String?,
       email: json['email'] as String?,
       devices: (json['devices'] as List<dynamic>?)
@@ -23,8 +22,7 @@ _$AccountImpl _$$AccountImplFromJson(Map<String, dynamic> json) =>
       user: User.fromJson(json['user'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$AccountImplToJson(_$AccountImpl instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$AccountToJson(_Account instance) => <String, dynamic>{
       'wallet': instance.wallet,
       'email': instance.email,
       'devices': instance.devices,
@@ -34,18 +32,17 @@ Map<String, dynamic> _$$AccountImplToJson(_$AccountImpl instance) =>
       'user': instance.user,
     };
 
-_$DeviceImpl _$$DeviceImplFromJson(Map<String, dynamic> json) => _$DeviceImpl(
+_Device _$DeviceFromJson(Map<String, dynamic> json) => _Device(
       id: json['id'] as String,
       vars: json['vars'] as Map<String, dynamic>?,
     );
 
-Map<String, dynamic> _$$DeviceImplToJson(_$DeviceImpl instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$DeviceToJson(_Device instance) => <String, dynamic>{
       'id': instance.id,
       'vars': instance.vars,
     };
 
-_$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
+_User _$UserFromJson(Map<String, dynamic> json) => _User(
       id: json['id'] as String,
       username: json['username'] as String?,
       displayName: json['display_name'] as String?,
@@ -70,8 +67,7 @@ _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
       appleId: json['apple_id'] as String?,
     );
 
-Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
       'id': instance.id,
       'username': instance.username,
       'display_name': instance.displayName,

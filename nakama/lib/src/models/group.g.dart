@@ -6,7 +6,7 @@ part of 'group.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$GroupImpl _$$GroupImplFromJson(Map<String, dynamic> json) => _$GroupImpl(
+_Group _$GroupFromJson(Map<String, dynamic> json) => _Group(
       id: json['id'] as String,
       creatorId: json['creator_id'] as String?,
       name: json['name'] as String?,
@@ -25,8 +25,7 @@ _$GroupImpl _$$GroupImplFromJson(Map<String, dynamic> json) => _$GroupImpl(
           : DateTime.parse(json['update_time'] as String),
     );
 
-Map<String, dynamic> _$$GroupImplToJson(_$GroupImpl instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$GroupToJson(_Group instance) => <String, dynamic>{
       'id': instance.id,
       'creator_id': instance.creatorId,
       'name': instance.name,
@@ -41,41 +40,39 @@ Map<String, dynamic> _$$GroupImplToJson(_$GroupImpl instance) =>
       'update_time': instance.updateTime?.toIso8601String(),
     };
 
-_$GroupListImpl _$$GroupListImplFromJson(Map<String, dynamic> json) =>
-    _$GroupListImpl(
+_GroupList _$GroupListFromJson(Map<String, dynamic> json) => _GroupList(
       cursor: json['cursor'] as String?,
       groups: (json['groups'] as List<dynamic>?)
           ?.map((e) => Group.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
-Map<String, dynamic> _$$GroupListImplToJson(_$GroupListImpl instance) =>
+Map<String, dynamic> _$GroupListToJson(_GroupList instance) =>
     <String, dynamic>{
       'cursor': instance.cursor,
       'groups': instance.groups,
     };
 
-_$UserGroupListImpl _$$UserGroupListImplFromJson(Map<String, dynamic> json) =>
-    _$UserGroupListImpl(
+_UserGroupList _$UserGroupListFromJson(Map<String, dynamic> json) =>
+    _UserGroupList(
       cursor: json['cursor'] as String?,
       userGroups: (json['user_groups'] as List<dynamic>?)
           ?.map((e) => UserGroup.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
-Map<String, dynamic> _$$UserGroupListImplToJson(_$UserGroupListImpl instance) =>
+Map<String, dynamic> _$UserGroupListToJson(_UserGroupList instance) =>
     <String, dynamic>{
       'cursor': instance.cursor,
       'user_groups': instance.userGroups,
     };
 
-_$UserGroupImpl _$$UserGroupImplFromJson(Map<String, dynamic> json) =>
-    _$UserGroupImpl(
+_UserGroup _$UserGroupFromJson(Map<String, dynamic> json) => _UserGroup(
       state: $enumDecode(_$GroupMembershipStateEnumMap, json['state']),
       group: Group.fromJson(json['group'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$UserGroupImplToJson(_$UserGroupImpl instance) =>
+Map<String, dynamic> _$UserGroupToJson(_UserGroup instance) =>
     <String, dynamic>{
       'state': _$GroupMembershipStateEnumMap[instance.state]!,
       'group': instance.group,
@@ -88,27 +85,26 @@ const _$GroupMembershipStateEnumMap = {
   GroupMembershipState.joinRequest: 3,
 };
 
-_$GroupUserListImpl _$$GroupUserListImplFromJson(Map<String, dynamic> json) =>
-    _$GroupUserListImpl(
+_GroupUserList _$GroupUserListFromJson(Map<String, dynamic> json) =>
+    _GroupUserList(
       cursor: json['cursor'] as String?,
       groupUsers: (json['group_users'] as List<dynamic>)
           .map((e) => GroupUser.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
-Map<String, dynamic> _$$GroupUserListImplToJson(_$GroupUserListImpl instance) =>
+Map<String, dynamic> _$GroupUserListToJson(_GroupUserList instance) =>
     <String, dynamic>{
       'cursor': instance.cursor,
       'group_users': instance.groupUsers,
     };
 
-_$GroupUserImpl _$$GroupUserImplFromJson(Map<String, dynamic> json) =>
-    _$GroupUserImpl(
+_GroupUser _$GroupUserFromJson(Map<String, dynamic> json) => _GroupUser(
       state: $enumDecode(_$GroupMembershipStateEnumMap, json['state']),
       user: User.fromJson(json['user'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$GroupUserImplToJson(_$GroupUserImpl instance) =>
+Map<String, dynamic> _$GroupUserToJson(_GroupUser instance) =>
     <String, dynamic>{
       'state': _$GroupMembershipStateEnumMap[instance.state]!,
       'user': instance.user,
