@@ -8,7 +8,7 @@ part 'storage.freezed.dart';
 part 'storage.g.dart';
 
 @freezed
-class StorageObject with _$StorageObject {
+abstract class StorageObject with _$StorageObject {
   const StorageObject._();
 
   const factory StorageObject({
@@ -40,7 +40,7 @@ class StorageObject with _$StorageObject {
 }
 
 @freezed
-class StorageObjectList with _$StorageObjectList {
+abstract class StorageObjectList with _$StorageObjectList {
   const StorageObjectList._();
 
   const factory StorageObjectList({
@@ -61,7 +61,7 @@ class StorageObjectList with _$StorageObjectList {
 }
 
 @freezed
-class StorageObjectId with _$StorageObjectId {
+abstract class StorageObjectId with _$StorageObjectId {
   const StorageObjectId._();
 
   const factory StorageObjectId({
@@ -83,7 +83,7 @@ class StorageObjectId with _$StorageObjectId {
 }
 
 @freezed
-class StorageObjectWrite with _$StorageObjectWrite {
+abstract class StorageObjectWrite with _$StorageObjectWrite {
   const StorageObjectWrite._();
 
   const factory StorageObjectWrite({

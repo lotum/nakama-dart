@@ -1,5 +1,3 @@
-library nakama;
-
 export 'src/client.dart' show Client;
 export 'src/models/account.dart' show Account, Device, User;
 export 'src/models/channel_message.dart'

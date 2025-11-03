@@ -6,7 +6,7 @@ part 'notification.freezed.dart';
 part 'notification.g.dart';
 
 @freezed
-class Notification with _$Notification {
+abstract class Notification with _$Notification {
   const Notification._();
 
   const factory Notification({
@@ -34,7 +34,7 @@ class Notification with _$Notification {
 }
 
 @freezed
-class NotificationList with _$NotificationList {
+abstract class NotificationList with _$NotificationList {
   const NotificationList._();
 
   const factory NotificationList({

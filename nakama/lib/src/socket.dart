@@ -409,12 +409,17 @@ class SocketImpl implements Socket {
       return;
     }
 
+    // Capture or create the completer future before initiating close
+    final Future<void> disconnectFuture;
     if (!_isDisconnecting) {
       _webSocketDisconnectedCompleter = Completer();
+      disconnectFuture = _webSocketDisconnectedCompleter!.future;
       await _webSocket!.sink.close(1000, 'Disconnecting');
+    } else {
+      disconnectFuture = _webSocketDisconnectedCompleter!.future;
     }
 
-    await _webSocketDisconnectedCompleter!.future;
+    await disconnectFuture;
   }
 
   @override

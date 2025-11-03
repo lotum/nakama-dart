@@ -23,7 +23,7 @@ enum LeaderboardOperator {
 }
 
 @freezed
-class LeaderboardRecordList with _$LeaderboardRecordList {
+abstract class LeaderboardRecordList with _$LeaderboardRecordList {
   const LeaderboardRecordList._();
 
   const factory LeaderboardRecordList({
@@ -48,7 +48,7 @@ class LeaderboardRecordList with _$LeaderboardRecordList {
 }
 
 @freezed
-class LeaderboardRecord with _$LeaderboardRecord {
+abstract class LeaderboardRecord with _$LeaderboardRecord {
   const LeaderboardRecord._();
 
   const factory LeaderboardRecord({

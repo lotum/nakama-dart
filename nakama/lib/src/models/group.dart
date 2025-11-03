@@ -8,7 +8,7 @@ part 'group.freezed.dart';
 part 'group.g.dart';
 
 @freezed
-class Group with _$Group {
+abstract class Group with _$Group {
   const Group._();
 
   const factory Group({
@@ -45,7 +45,7 @@ class Group with _$Group {
 }
 
 @freezed
-class GroupList with _$GroupList {
+abstract class GroupList with _$GroupList {
   const GroupList._();
 
   const factory GroupList({
@@ -63,7 +63,7 @@ class GroupList with _$GroupList {
 }
 
 @freezed
-class UserGroupList with _$UserGroupList {
+abstract class UserGroupList with _$UserGroupList {
   const UserGroupList._();
 
   const factory UserGroupList({
@@ -83,7 +83,7 @@ class UserGroupList with _$UserGroupList {
 }
 
 @freezed
-class UserGroup with _$UserGroup {
+abstract class UserGroup with _$UserGroup {
   const UserGroup._();
 
   const factory UserGroup({
@@ -101,7 +101,7 @@ class UserGroup with _$UserGroup {
 }
 
 @freezed
-class GroupUserList with _$GroupUserList {
+abstract class GroupUserList with _$GroupUserList {
   const GroupUserList._();
 
   const factory GroupUserList({
@@ -121,7 +121,7 @@ class GroupUserList with _$GroupUserList {
 }
 
 @freezed
-class GroupUser with _$GroupUser {
+abstract class GroupUser with _$GroupUser {
   const GroupUser._();
 
   const factory GroupUser({

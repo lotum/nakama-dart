@@ -6,7 +6,7 @@ import 'status.dart';
 part 'party.freezed.dart';
 
 @freezed
-class PartyData with _$PartyData {
+abstract class PartyData with _$PartyData {
   const PartyData._();
 
   const factory PartyData({
@@ -32,7 +32,7 @@ class PartyData with _$PartyData {
 }
 
 @freezed
-class PartyPresenceEvent with _$PartyPresenceEvent {
+abstract class PartyPresenceEvent with _$PartyPresenceEvent {
   const PartyPresenceEvent._();
 
   const factory PartyPresenceEvent({
@@ -55,7 +55,7 @@ class PartyPresenceEvent with _$PartyPresenceEvent {
 }
 
 @freezed
-class PartyLeader with _$PartyLeader {
+abstract class PartyLeader with _$PartyLeader {
   const PartyLeader._();
 
   const factory PartyLeader({

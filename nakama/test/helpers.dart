@@ -56,11 +56,11 @@ class TestHelper {
   Future<Socket> createSocket(Client client) async {
     final socket = client.createSocket(
       onDisconnect: (code, reason) {
-        expect(code, 1000);
-        // TODO: This should be "Disconnecting", which is what is used when
-        // closing the socket in `Socket.disconnect()`. Maybe this is a bug in
-        // the WebSocket implementation?
-        expect(reason, '');
+        // closeCode and closeReason only reflect the remote peer's close frame.
+        // When closing from the client side, these remain null because we
+        // didn't receive a close frame from the server.
+        expect(code, isNull);
+        expect(reason, isNull);
       },
       onError: (error, stackTrace) => fail('Socket error: $error\n$stackTrace'),
     );

@@ -8,7 +8,7 @@ part 'match.freezed.dart';
 part 'match.g.dart';
 
 @freezed
-class Match with _$Match {
+abstract class Match with _$Match {
   const Match._();
 
   const factory Match({
@@ -29,7 +29,16 @@ class Match with _$Match {
     int? tickRate,
     String? handlerName,
     required List<UserPresence> presences,
-  }) = RealtimeMatch;
+  }) =>
+      Match(
+        matchId: matchId,
+        authoritative: authoritative,
+        label: label,
+        size: size,
+        tickRate: tickRate,
+        handlerName: handlerName,
+        presences: presences,
+      );
 
   factory Match.fromJson(Map<String, Object?> json) => _$MatchFromJson(json);
 
@@ -54,8 +63,12 @@ class Match with _$Match {
       );
 }
 
+/// Type alias for backward compatibility with code using [RealtimeMatch].
+/// [RealtimeMatch] is now the same as [Match].
+typedef RealtimeMatch = Match;
+
 @freezed
-class Party with _$Party {
+abstract class Party with _$Party {
   const Party._();
 
   const factory Party({

@@ -6,8 +6,7 @@ part of 'tournament.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$TournamentImpl _$$TournamentImplFromJson(Map<String, dynamic> json) =>
-    _$TournamentImpl(
+_Tournament _$TournamentFromJson(Map<String, dynamic> json) => _Tournament(
       id: json['id'] as String,
       title: json['title'] as String?,
       description: json['description'] as String?,
@@ -34,7 +33,7 @@ _$TournamentImpl _$$TournamentImplFromJson(Map<String, dynamic> json) =>
       prevReset: (json['prev_reset'] as num?)?.toInt(),
     );
 
-Map<String, dynamic> _$$TournamentImplToJson(_$TournamentImpl instance) =>
+Map<String, dynamic> _$TournamentToJson(_Tournament instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
@@ -56,24 +55,23 @@ Map<String, dynamic> _$$TournamentImplToJson(_$TournamentImpl instance) =>
       'prev_reset': instance.prevReset,
     };
 
-_$TournamentListImpl _$$TournamentListImplFromJson(Map<String, dynamic> json) =>
-    _$TournamentListImpl(
+_TournamentList _$TournamentListFromJson(Map<String, dynamic> json) =>
+    _TournamentList(
       cursor: json['cursor'] as String?,
       tournaments: (json['tournaments'] as List<dynamic>)
           .map((e) => Tournament.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
-Map<String, dynamic> _$$TournamentListImplToJson(
-        _$TournamentListImpl instance) =>
+Map<String, dynamic> _$TournamentListToJson(_TournamentList instance) =>
     <String, dynamic>{
       'cursor': instance.cursor,
       'tournaments': instance.tournaments,
     };
 
-_$TournamentRecordListImpl _$$TournamentRecordListImplFromJson(
+_TournamentRecordList _$TournamentRecordListFromJson(
         Map<String, dynamic> json) =>
-    _$TournamentRecordListImpl(
+    _TournamentRecordList(
       records: (json['records'] as List<dynamic>)
           .map((e) => LeaderboardRecord.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -84,8 +82,8 @@ _$TournamentRecordListImpl _$$TournamentRecordListImplFromJson(
       previousCursor: json['previous_cursor'] as String?,
     );
 
-Map<String, dynamic> _$$TournamentRecordListImplToJson(
-        _$TournamentRecordListImpl instance) =>
+Map<String, dynamic> _$TournamentRecordListToJson(
+        _TournamentRecordList instance) =>
     <String, dynamic>{
       'records': instance.records,
       'owner_records': instance.ownerRecords,
