@@ -19,10 +19,10 @@ jobs:
           - satori
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@0717577d45739eb3c851188b29f50ed6c0b2194e # v2
 
       - name: Setup Flutter
-        uses: subosito/flutter-action@v2
+        uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
 
       - name: Install dependencies
         run: dart pub get
