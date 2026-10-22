@@ -138,6 +138,12 @@ final class RestClient extends ClientBase {
               message: '$exception\n$stackTrace',
             ),
           DioExceptionType.cancel => null,
+          _ => NakamaError(
+              code: type.name.endsWith('Timeout')
+                  ? ErrorCode.deadlineExceeded
+                  : ErrorCode.unknown,
+              message: exception.toString(),
+            ),
         },
       _ => null,
     };
